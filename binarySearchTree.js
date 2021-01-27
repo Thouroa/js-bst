@@ -67,18 +67,19 @@ function Postorder(node){
   2   6
  1 3 5 7
 
+// Param: 4 2 6 1 3 5 7
+
 // Inorder: 1, 2, 3, 4, 5, 6, 7
 // Preorder: 4, 2, 1, 3, 6, 5, 7
 // Postorder: 1, 3, 2, 5, 7, 6, 4
 ---------*/
 let tree = new BinarySearchTree()
-tree.push(4)
-tree.push(2)
-tree.push(6)
-tree.push(1)
-tree.push(3)
-tree.push(5)
-tree.push(7)
+
+var myArgs = process.argv.slice(2);
+console.log('myArgs: ', myArgs);
+for(arg of myArgs){
+    tree.push(arg)
+}
 
 console.log("Inorder:")
 Inorder(tree.root)
@@ -86,3 +87,4 @@ console.log("Preorder:")
 Preorder(tree.root)
 console.log("Postorder:")
 Postorder(tree.root)
+
