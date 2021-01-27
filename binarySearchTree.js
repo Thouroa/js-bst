@@ -38,27 +38,42 @@ BinarySearchTree.prototype.push = function (value) {
 }
 
 //Inorder: Left, Root, Right
-function Inorder(node) {
-    if(!node)return
-    Inorder(node.left)
+function Inorder(node, search) {
+    if (!node) return
+    Inorder(node.left, search)
     console.log(node.value)
-    Inorder(node.right)
+    if (node.value == search) return
+    Inorder(node.right, search)
 }
 
 //Preorder: Root, Left, Right
-function Preorder(node) {
-    if(!node)return
+function Preorder(node, search) {
+    if (!node) return
     console.log(node.value)
-    Preorder(node.left)
-    Preorder(node.right)
+    if (node.value == search) return
+    Preorder(node.left, search)
+    Preorder(node.right, search)
 }
 
 //Postorder: Left, Right, Root
-function Postorder(node){
-    if(!node)return
-    Postorder(node.left)
-    Postorder(node.right)
+function Postorder(node, search) {
+    if (!node) return
+    Postorder(node.left, search)
+    Postorder(node.right, search)
     console.log(node.value)
+    if (node.value == search) return
+}
+
+function ReadFile(path) {
+    let reader = require('fs')
+    let data = ""
+    try {
+        data = reader.readFileSync(path, 'utf8')
+    } catch (err) {
+        console.error(err)
+        return ""
+    }
+    return data
 }
 
 //Create a new tree
@@ -76,15 +91,25 @@ function Postorder(node){
 let tree = new BinarySearchTree()
 
 var myArgs = process.argv.slice(2);
-console.log('myArgs: ', myArgs);
-for(arg of myArgs){
-    tree.push(arg)
+if (myArgs.length != 2) {
+    const path = require('path');
+    const basename = path.basename(process.argv[1]);
+    console.error(`Usage: node ${basename} <tree_file_path> <search_value>`);
+    process.exit(1);
+}
+
+const searchNode = myArgs[1]
+
+let treestr = ReadFile(myArgs[0])
+let treenodes = treestr.split(' ')
+
+for (node of treenodes) {
+    tree.push(node)
 }
 
 console.log("Inorder:")
-Inorder(tree.root)
+Inorder(tree.root, searchNode)
 console.log("Preorder:")
-Preorder(tree.root)
+Preorder(tree.root, searchNode)
 console.log("Postorder:")
-Postorder(tree.root)
-
+Postorder(tree.root, searchNode)
